@@ -1,0 +1,38 @@
+2025-05-11 11:48:21,856-INFO-Test cases for supplier_data- file availability check has started ....
+2025-05-11 11:48:21,859-INFO-Test cases for supplier_data- zero byte size check has started ....
+2025-05-11 11:48:21,861-INFO-Test cases for supplier_data- duplicate row check has started ....
+2025-05-11 11:48:21,902-INFO-The  data is:     supplier_id         supplier_name    contact_name  ...    country rating last_order_date
+0           1.0      ABC Distributors        John Doe  ...        USA    4.8      2024-11-20
+1           1.0      ABC Distributors        John Doe  ...        USA    4.8      2024-11-20
+2           2.0     Global Goods Inc.      Jane Smith  ...     Canada    4.3      2024-11-19
+3           3.0   GreenTech Solutions  Robert Johnson  ...         UK    4.6      2024-11-18
+4           4.0              EuroWare     Emily White  ...    Germany    4.2      2024-11-22
+5           5.0      Pacific Products   Michael Brown  ...  Australia    4.7      2024-11-17
+6           6.0     Fresh Produce Co.    Sarah Taylor  ...     France    4.4      2024-11-21
+7           7.0  TechCore Electronics       David Lee  ...      Japan    4.9      2024-11-23
+8           8.0       HanYang Trading      Laura King  ...      China    4.1      2024-11-16
+9           9.0         Indo Supplies  James Williams  ...      India    4.3      2024-11-25
+10          NaN         LatAm Imports   Olivia Harris  ...     Mexico    4.5      2024-11-20
+
+[11 rows x 8 columns]
+2025-05-11 11:48:21,905-ERROR- error occured during test Supplier_data.json file has duplicate rows
+assert False == True
+ +  where False = check_duplicates_rows('TestData/supplier_data.json', 'json')
+2025-05-11 11:48:22,249-INFO-Test cases for supplier_data- null value heck has started ....
+2025-05-11 11:48:22,268-INFO-The  data is:     supplier_id         supplier_name    contact_name  ...    country rating last_order_date
+0           1.0      ABC Distributors        John Doe  ...        USA    4.8      2024-11-20
+1           1.0      ABC Distributors        John Doe  ...        USA    4.8      2024-11-20
+2           2.0     Global Goods Inc.      Jane Smith  ...     Canada    4.3      2024-11-19
+3           3.0   GreenTech Solutions  Robert Johnson  ...         UK    4.6      2024-11-18
+4           4.0              EuroWare     Emily White  ...    Germany    4.2      2024-11-22
+5           5.0      Pacific Products   Michael Brown  ...  Australia    4.7      2024-11-17
+6           6.0     Fresh Produce Co.    Sarah Taylor  ...     France    4.4      2024-11-21
+7           7.0  TechCore Electronics       David Lee  ...      Japan    4.9      2024-11-23
+8           8.0       HanYang Trading      Laura King  ...      China    4.1      2024-11-16
+9           9.0         Indo Supplies  James Williams  ...      India    4.3      2024-11-25
+10          NaN         LatAm Imports   Olivia Harris  ...     Mexico    4.5      2024-11-20
+
+[11 rows x 8 columns]
+2025-05-11 11:48:22,270-ERROR- error occured during test Supplier_data.json file has some null values
+assert False == True
+ +  where False = check_duplicates_rows('TestData/supplier_data.json', 'json')

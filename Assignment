@@ -1,0 +1,12 @@
+1. Implement fixture to run at class level .i.e. once db connection is established, it will close
+   only after all the test cases are executed - in all the stages
+
+2. Implement remaining Data Transformation test cases ( 2 of the aggregators and 1 joiner test case )
+   in test_DataTransfromation.py
+
+3. In development project - create a python file that takes care of extract, transfrom and load.
+
+4. In utils, add a function to verify if there are duplicates on a specific column
+
+5. In test_DataQuality.py , implement these 4 test case for remaining files ( 3 )
+
