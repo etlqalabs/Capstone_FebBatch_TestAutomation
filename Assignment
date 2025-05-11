@@ -10,3 +10,9 @@
 
 5. In test_DataQuality.py , implement these 4 test case for remaining files ( 3 )
 
+6. Create 2 jobs:
+   a) 1 for development and run all the etract, transform, load ( create a single job to take
+   care of these 3 stage
+   b) test job and ensure that successul build of dev job should trigger this test job
+
+
