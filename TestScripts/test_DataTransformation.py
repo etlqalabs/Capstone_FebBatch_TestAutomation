@@ -20,7 +20,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-@pytest.mark.usefixtures("connect_to_mysql_db")
+@pytest.mark.usefixtures("connect_to_mysql_db","print_message")
 class TestDataTransformation:
 
     def test_DataTransformation_Filter_check(self,connect_to_mysql_db):
@@ -53,6 +53,42 @@ class TestDataTransformation:
         except Exception as e:
             logger.error(f"Test cases execution for Router_High transformation failed {e}")
             pytest.fail("Test cases execution for Router_High transformation failed" )
+
+    def test_DataTransformation_Aggregator_Sales_Data(self,connect_to_mysql_db):
+        logger.info("Test cases execution for Aggregator_Sales_Data transformation has started ....")
+        try:
+            expected_query = """select product_id,month(sale_date) as month ,year(sale_date) as year ,sum(quantity*price) as total_sales from filtered_sales_data 
+                        group by product_id,month(sale_date),year(sale_date)"""
+            actual_query = """select * from monthly_sales_summary_source"""
+            verify_expected_from_db_to_actual_from_db(expected_query,connect_to_mysql_db,actual_query,connect_to_mysql_db)
+        except Exception as e:
+            logger.error(f"Test cases execution for Aggregator_Sales_Data transformation failed {e}")
+            pytest.fail("Test cases execution for Aggregator_Sales_Data transformation failed" )
+
+    def test_DataTransformation_Aggregator_Inventory_level_check(self,connect_to_mysql_db):
+        logger.info("Test cases execution for Aggregator_Inventory_level_check transformation has started ....")
+        try:
+            expected_query = """select store_id,sum(quantity_on_hand) as total_inventory from staging_inventory group by store_id"""
+            actual_query = """select * from aggegated_inventory_level"""
+            verify_expected_from_db_to_actual_from_db(expected_query,connect_to_mysql_db,actual_query,connect_to_mysql_db)
+        except Exception as e:
+            logger.error(f"Test cases execution for Aggregator_Inventory_level_check transformation failed {e}")
+            pytest.fail("Test cases execution for Aggregator_Inventory_level_check transformation failed" )
+
+    def test_DataTransformation_Joiner_Transformation_check(self,connect_to_mysql_db):
+        logger.info("Test cases execution for Joiner_Transformation_checktransformation has started ....")
+        try:
+            expected_query =  """select fs.sales_id,fs.quantity,fs.price,fs.quantity*fs.price 
+                       as sales_amount,fs.sale_date,p.product_id,p.product_name,
+                        s.store_id,s.store_name
+                        from filtered_sales_data as fs 
+                        inner join staging_product as p on fs.product_id = p.product_id
+                        inner join staging_stores as s on fs.store_id = s.store_id"""
+            actual_query = """select * from sales_with_details"""
+            verify_expected_from_db_to_actual_from_db(expected_query,connect_to_mysql_db,actual_query,connect_to_mysql_db)
+        except Exception as e:
+            logger.error(f"Test cases execution for Joiner_Transformation_check transformation failed {e}")
+            pytest.fail("Test cases execution for Joiner_Transformation_check transformation failed" )
 
 
 

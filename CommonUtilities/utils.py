@@ -106,6 +106,26 @@ def check_duplicates_rows(file_path,file_type):
     except Exception as e:
         logger.error(f"error while reading the file{e}")
 
+def check_duplicates_for_specific_column(file_path,file_type,column_name):
+    try:
+        if file_type == "csv":
+            df = pd.read_csv(file_path)
+        elif file_type == "json":
+            df = pd.read_json(file_path)
+        elif file_type == "xml":
+            df= pd.read_xml(file_path,xpath=".//item")
+        else:
+            raise ValueError(f"unsupported file type passed {file_type}")
+        logger.info(f"The  data is: {df}")
+        if df[column_name].duplicated().any():
+            return False
+        else:
+            return True
+    except Exception as e:
+        logger.error(f"error while reading the file{e}")
+
+
+
 def check_for_null_values(file_path,file_type):
     try:
         if file_type == "csv":
