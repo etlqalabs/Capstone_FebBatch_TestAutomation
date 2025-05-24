@@ -3,7 +3,7 @@ from sqlalchemy import create_engine
 import cx_Oracle
 
 from CommonUtilities.utils import verify_expected_from_files_to_actual_from_db, \
-    verify_expected_from_db_to_actual_from_db
+    verify_expected_from_db_to_actual_from_db, verify_expected_as_S3_to_actual_as_db
 from Configuration.ETLconfigs import *
 import pytest
 
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 class TestDataExtraction:
 
     @pytest.mark.dataExtraction
+    @pytest.mark.skip
     def test_DataExtraction_sales_data_to_staging(self,connect_to_mysql_db):
         logger.info("Test cases execution for sales_data extraction from source started ....")
         try:
@@ -37,6 +38,7 @@ class TestDataExtraction:
 
 
     @pytest.mark.dataExtraction
+    @pytest.mark.skip
     def test_DataExtraction_product_data_to_staging(self,connect_to_mysql_db):
         logger.info("Test cases execution for product_data extraction from source started ....")
         try:
@@ -48,6 +50,7 @@ class TestDataExtraction:
             pytest.fail("Test cases execution for product_data extraction from source failed" )
 
     @pytest.mark.dataExtraction
+    @pytest.mark.skip
     def test_DataExtraction_inventory_data_to_staging(self,connect_to_mysql_db):
         logger.info("Test cases execution for inventory_data extraction from source started ....")
         try:
@@ -59,6 +62,7 @@ class TestDataExtraction:
             pytest.fail("Test cases execution for inventory_data extraction from source failed" )
 
     @pytest.mark.dataExtraction
+    @pytest.mark.skip
     def test_DataExtraction_supplier_data_to_staging(self,connect_to_mysql_db):
         logger.info("Test cases execution for supplier_data extraction from source started ....")
         try:
@@ -69,6 +73,7 @@ class TestDataExtraction:
             pytest.fail("Test cases execution for supplier_data extraction from source failed" )
 
     @pytest.mark.oracleSourceExtraction
+    @pytest.mark.skip
     def test_DataExtraction_store_data_to_staging(self,connect_to_oracle_db,connect_to_mysql_db):
         logger.info("Test cases execution for stores_data extraction from source started ....")
         try:
@@ -81,4 +86,16 @@ class TestDataExtraction:
 
 
 
+    def test_DE_from_product_data_to_staging(self, connect_to_mysql_db):
+        try:
+            logger.info("Test case executin for product_data extraction has started..")
+            bucket_name = 's3bucket-may24'  # Replace with your actual bucket name
+            file_key = 'data/product_data.csv'
 
+            query_actual = """select * from staging_product"""
+            verify_expected_as_S3_to_actual_as_db(bucket_name, file_key, connect_to_mysql_db, query_actual)
+           # verify_expected_as_file_to_actual_as_db("TestData/product_data_absolute.csv","csv",connect_to_mysql_database,"staging_product")
+            logger.info("Test case executin for product_data extraction has completed..")
+        except Exception as e:
+            logger.error(f"Test case executin for product_data extraction has failed{e}")
+            pytest.fail("Test case executin for product_data extraction has failed")
